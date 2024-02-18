@@ -5,6 +5,12 @@ import time
 import numpy as np
 import pandas as pd
 
+# sets the number of factors for the matrix_factorization file
+numFactors = 1
+
+# we will divide the regularization of the intercepts by the amount of factors multiplied by this variable + a tiny bit
+# you can set to zero if you don't actually want to divide the regularization
+factorRegularizationRatio = 1
 
 # Default number of threads to use in torch if os.cpu_count() is unavailable
 # and no value is specified.
