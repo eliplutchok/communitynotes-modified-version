@@ -415,7 +415,7 @@ def compute_scored_notes(
   noteParamsColsToKeep = [c.noteIdKey, c.internalNoteInterceptKey, c.internalNoteFactor1Key]
 
   # add all note factor columns
-  noteParamsColsToKeep += [c.internalNoteFactorKeyBase + str(i) for i in range(c.numFactors)]
+  noteParamsColsToKeep += [c.internalNoteFactorKeyBase + str(i) for i in range(1, c.numFactors + 1)]
 
   if finalRound:
     noteParamsColsToKeep += [c.lowDiligenceInterceptKey]
