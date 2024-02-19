@@ -184,7 +184,7 @@ class MFGroupScorer(MFBaseScorer):
     # Dynamically define group rater and note factor keys
     for i in range(1, c.numFactors + 1):
         setattr(self, f"_{c.groupNoteFactorKeyBase}{i}Key", f"{c.groupNoteFactorKeyBase}{i}_{self._groupNumber}")
-        setattr(self, f"{c.groupRaterFactorKeyBase}{i}Key", f"{c.groupRaterFactorKeyBase}{i}_{self._groupNumber}")
+        setattr(self, f"_{c.groupRaterFactorKeyBase}{i}Key", f"{c.groupRaterFactorKeyBase}{i}_{self._groupNumber}")
 
   def get_name(self):
     return f"MFGroupScorer_{self._groupNumber}"
