@@ -54,12 +54,12 @@ class MFExpansionScorer(MFBaseScorer):
   def get_scored_notes_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the scoredNotes output."""
 
-    expansion_plus_note_factors = [f"{c.expansionNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+    expansion_note_factors = [f"{c.expansionNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
 
     return [
       c.noteIdKey,
       c.expansionNoteInterceptKey,
-      *expansion_plus_note_factors,
+      *expansion_note_factors,
       c.expansionRatingStatusKey,
       c.expansionNoteInterceptMinKey,
       c.expansionNoteInterceptMaxKey,
@@ -90,7 +90,7 @@ class MFExpansionScorer(MFBaseScorer):
   def _get_dropped_user_cols(self) -> List[str]:
     """Returns a list of columns which should be excluded from helpfulnessScores output."""
 
-    internal_rater_factors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+    internal_rater_factors = [f"{c.internalRaterFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
 
     return super()._get_dropped_user_cols() + [
       c.raterParticipantIdKey,
