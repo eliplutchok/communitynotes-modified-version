@@ -35,6 +35,11 @@ Changes required to handle multiple factors:
    Set numFactors to c.numFactors. Divided the 5s in the intercept lambdas by our new variable interceptRegularizationDampener.
 6. Edited run_scoring, the initiation of the MFGroupScorer that uses diamond_lambda. I added in the interceptRegularizationDampener in the appropriate places.
 
+Additional Changes:
+
+1. Added data folder.
+1. in the data folder I added a script that downloads all the necessary data.
+
 Instructions to run program:
 
 1. Install requirements (first set up virtual env if your doing this on your own pc or gpu).
