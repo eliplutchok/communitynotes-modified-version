@@ -97,7 +97,7 @@ class NormalizedLoss(torch.nn.Module):
     return ratings
 
   def __init__(
-    self, criterion, ratings, targets, hparams, labelCol, raterFactors=None,
+    self, criterion, ratings, targets, hparams, labelCol, raterFactors=None, device=None
   ):
     super().__init__()
     # Initialize members
@@ -130,7 +130,7 @@ class NormalizedLoss(torch.nn.Module):
     )
     self.weights = torch.tensor([weightMap[(rater, note)] for (rater, note) in ratingOrder.values])
     assert len(self.weights) == len(self.targets)
-    self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    self.device = device
 
   def forward(self, pred):
     
