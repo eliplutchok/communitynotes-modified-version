@@ -8,12 +8,18 @@ Please go here to see the original readme: https://github.com/twitter/communityn
 
 This is a revised edition of community notes. It fixes some bugs, adds some extra functionality, and most importantly refactors parts of the code so that it will work well with more than one factor. In this readme, I just detail my changes.
 
+Changes required to get the code to run on a gpu:
+
 1. Added a data folder, with some scripts.
 2. Added self.device to cuda in matrix_factorization (line 88) also changed lines 214-219.
 3. Added self.device to cude in normalized_loss
 4. In normalized_loss I added .cpu() on line 108
-5. In constants I add (in the beggining): numFactors and factorRegularizationRatio.
-6. Additional constants that I added:
+
+Changes required to handle multiple factors:
+
+1. In constants I add (in the beggining): numFactors and interceptRegularizationDampener (by default set to numFactors).
+2. Additional constants that I added:
+
    coreNoteFactorKeyBase
    coreRaterFactorKeyBase
    expansionNoteFactorKeyBase
@@ -21,12 +27,17 @@ This is a revised edition of community notes. It fixes some bugs, adds some extr
    groupNoteFactorKeyBase
    groupRaterFactorKeyBase
 
-7. Edited the following files and functions to handle multiple factors of rnotes and raters:
+3. Edited raterModelOutputTSVColumnsAndTypes in constants.
+4. Edited the following files and functions to handle multiple factors of notes and raters:
+
    mf_base_scorer -> get_scored_notes_cols, get_helpfulness_scores_cols
    mf_core_scorer -> \_get_note_col_mapping, \_get_user_col_mapping, get_scored_notes_cols, get_helpfulness_scores_cols
    mf_expansion_scorer -> get_scored_notes_cols, \_get_dropped_user_cols
    mf_expansion_plus_scorer -> get_scored_notes_cols, \_get_dropped_note_cols
    mf_group_scorer -> coalesce_group_models, MFGroupScorer, MFGroupScorer->\_get_note_col_mapping, MFGroupScorer->\_get_user_col_mapping, MFGroupScorer->get_scored_notes_cols, MFGroupScorer->get_helpfulness_scores_cols
+
+5. Edited matrix_factorization:
+   Set numFactors to c.numFactors. Divided the 5s int eh intercept lambdas by our new variable interceptRegularizationDampener.
 
 Instructions to run program:
 

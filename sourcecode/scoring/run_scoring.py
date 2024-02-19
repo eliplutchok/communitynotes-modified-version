@@ -84,11 +84,11 @@ def _get_scorers(
       MFGroupScorer(
         groupNumber=trialScoringGroup,
         seed=seed,
-        noteInterceptLambda=0.03 * 30,
-        userInterceptLambda=0.03 * 5,
-        globalInterceptLambda=0.03 * 5,
-        noteFactorLambda=0.03 / 3,
-        userFactorLambda=0.03 / 4,
+        noteInterceptLambda=0.03 * (30 / (c.interceptRegularizationDampener)),
+        userInterceptLambda=0.03 * (5 / (c.interceptRegularizationDampener)),
+        globalInterceptLambda=0.03 * (5 / (c.interceptRegularizationDampener)),
+        noteFactorLambda=0.03 / ((3 / (c.interceptRegularizationDampener))),
+        userFactorLambda=0.03 / ((4 / (c.interceptRegularizationDampener))),
         diamondLambda=0.03 * 25,
         normalizedLossHyperparameters=NormalizedLossHyperparameters(
           globalSignNorm=True, noteSignAlpha=None, noteNormExp=0, raterNormExp=-0.25

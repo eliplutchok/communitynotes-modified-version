@@ -242,7 +242,7 @@ class MFGroupScorer(MFBaseScorer):
     """Returns a list of columns which should be present in the helpfulnessScores output."""
 
     # Dynamic list of group rater factor keys
-    group_rater_factors = [getattr(self, f"_{c.groupNoteFactorKeyBase}{i}Key") for i in range(1, c.numFactors + 1)]
+    group_rater_factors = [getattr(self, f"_{c.groupRaterFactorKeyBase}{i}Key") for i in range(1, c.numFactors + 1)]
 
     return [
         c.raterParticipantIdKey,

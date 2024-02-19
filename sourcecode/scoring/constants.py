@@ -8,9 +8,8 @@ import pandas as pd
 # sets the number of factors for the matrix_factorization file
 numFactors = 1
 
-# we will divide the regularization of the intercepts by the amount of factors multiplied by this variable + a tiny bit
-# you can set to zero if you don't actually want to divide the regularization
-factorRegularizationRatio = 1
+# we will divide the regularization of the intercepts by this number
+interceptRegularizationDampener = numFactors
 
 # Default number of threads to use in torch if os.cpu_count() is unavailable
 # and no value is specified.
@@ -546,10 +545,16 @@ deprecatedNoteModelOutputTSVColumnsAndTypes = [
   if col in deprecatedNoteModelOutputColumns
 ]
 
+# Define core rater factor tuples
+coreRaterFactors = [(f"{coreRaterFactorKeyBase}{i}", np.double) for i in range(1, numFactors + 1)]
+
+# Define group rater factor tuples
+groupRaterFactors = [(f"{groupRaterFactorKeyBase}{i}", np.double) for i in range(1, numFactors + 1)]
+
 raterModelOutputTSVColumnsAndTypes = [
   (raterParticipantIdKey, np.int64),
   (coreRaterInterceptKey, np.double),
-  (coreRaterFactor1Key, np.double),
+  *coreRaterFactors,
   (crhCrnhRatioDifferenceKey, np.double),
   (meanNoteScoreKey, np.double),
   (raterAgreeRatioKey, np.double),
@@ -573,7 +578,7 @@ raterModelOutputTSVColumnsAndTypes = [
   (aggregateRatingReceivedTotal, pd.Int64Dtype()),
   (timestampOfLastEarnOut, np.double),
   (groupRaterInterceptKey, np.double),
-  (groupRaterFactor1Key, np.double),
+  *groupRaterFactors,
   (modelingGroupKey, np.float64),
   (raterHelpfulnessReputationKey, np.double),
 ]
