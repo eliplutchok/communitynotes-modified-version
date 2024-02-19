@@ -89,7 +89,8 @@ def _get_scorers(
         globalInterceptLambda=0.03 * (5 / (c.interceptRegularizationDampener)),
         noteFactorLambda=0.03 / ((3 / (c.interceptRegularizationDampener))),
         userFactorLambda=0.03 / ((4 / (c.interceptRegularizationDampener))),
-        diamondLambda=0.03 * 25,
+        # not completely sure about how this will impact the distribution of the intercepts
+        diamondLambda=0.03 * (25 * c.interceptRegularizationDampener),
         normalizedLossHyperparameters=NormalizedLossHyperparameters(
           globalSignNorm=True, noteSignAlpha=None, noteNormExp=0, raterNormExp=-0.25
         ),

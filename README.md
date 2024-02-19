@@ -37,7 +37,8 @@ Changes required to handle multiple factors:
    mf_group_scorer -> coalesce_group_models, MFGroupScorer, MFGroupScorer->\_get_note_col_mapping, MFGroupScorer->\_get_user_col_mapping, MFGroupScorer->get_scored_notes_cols, MFGroupScorer->get_helpfulness_scores_cols
 
 5. Edited matrix_factorization:
-   Set numFactors to c.numFactors. Divided the 5s int eh intercept lambdas by our new variable interceptRegularizationDampener.
+   Set numFactors to c.numFactors. Divided the 5s in the intercept lambdas by our new variable interceptRegularizationDampener.
+6. Edited run_scoring, the initiation of the MFGroupScorer that uses diamond_lambda. I added in the interceptRegularizationDampener in the appropriate places.
 
 Instructions to run program:
 
