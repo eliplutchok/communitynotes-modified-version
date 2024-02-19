@@ -413,6 +413,10 @@ def compute_scored_notes(
 
   # Merge with noteParams as necessary
   noteParamsColsToKeep = [c.noteIdKey, c.internalNoteInterceptKey, c.internalNoteFactor1Key]
+
+  # add all note factor columns
+  noteParamsColsToKeep += [c.internalNoteFactorKeyBase + str(i) for i in range(c.numFactors)]
+
   if finalRound:
     noteParamsColsToKeep += [c.lowDiligenceInterceptKey]
   for col in c.noteParameterUncertaintyTSVColumns:

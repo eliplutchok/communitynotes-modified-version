@@ -31,6 +31,7 @@ Changes required to handle multiple factors:
    - mf_expansion_scorer -> get_scored_notes_cols, \_get_dropped_user_cols
    - mf_expansion_plus_scorer -> get_scored_notes_cols, \_get_dropped_note_cols
    - mf_group_scorer -> coalesce_group_models, MFGroupScorer, MFGroupScorer->\_get_note_col_mapping, MFGroupScorer->\_get_user_col_mapping, MFGroupScorer->get_scored_notes_cols, MFGroupScorer->get_helpfulness_scores_cols
+   - note_ratings->compute_scored_notes
 5. Edited matrix_factorization:
    Set numFactors to c.numFactors. Divided the 5s in the intercept lambdas by our new variable interceptRegularizationDampener.
 6. Edited run_scoring, the initiation of the MFGroupScorer that uses diamond_lambda. I added in the interceptRegularizationDampener in the appropriate places.
