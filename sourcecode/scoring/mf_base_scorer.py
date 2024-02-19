@@ -219,10 +219,13 @@ class MFBaseScorer(Scorer):
 
   def get_scored_notes_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the scoredNotes output."""
+
+    internal_note_factors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
     return [
       c.noteIdKey,
       c.internalNoteInterceptKey,
-      c.internalNoteFactor1Key,
+      *internal_note_factors,
       c.internalRatingStatusKey,
       c.internalActiveRulesKey,
       c.activeFilterTagsKey,
@@ -232,10 +235,13 @@ class MFBaseScorer(Scorer):
 
   def get_helpfulness_scores_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the helpfulnessScores output."""
+
+    internal_rater_factors = [f"{c.internalRaterFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
     return [
       c.raterParticipantIdKey,
       c.internalRaterInterceptKey,
-      c.internalRaterFactor1Key,
+      *internal_rater_factors,
       c.crhCrnhRatioDifferenceKey,
       c.meanNoteScoreKey,
       c.raterAgreeRatioKey,

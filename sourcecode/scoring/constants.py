@@ -121,9 +121,11 @@ internalRaterFactor1Key = rater_factor_key(1)
 # Output Scoring Columns.
 # Core Model
 coreNoteInterceptKey = "coreNoteIntercept"
+coreNoteFactorKeyBase = "coreNoteFactor"
 coreNoteFactor1Key = "coreNoteFactor1"
 coreRaterInterceptKey = "coreRaterIntercept"
 coreRaterFactor1Key = "coreRaterFactor1"
+coreRaterFactorKeyBase = "coreRaterFactor"
 coreRatingStatusKey = "coreRatingStatus"
 coreActiveRulesKey = "coreActiveRules"
 coreNoteInterceptMaxKey = "coreNoteInterceptMax"

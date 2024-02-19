@@ -105,7 +105,8 @@ class NormalizedLoss(torch.nn.Module):
     self.targets = targets
     # Validate that ratings is ordered correctly and preserve order
     assert len(ratings) == len(targets)
-    assert all(ratings[labelCol].values == targets.numpy())
+    assert all(ratings[labelCol].values == targets.cpu().numpy())
+
     ratingOrder = ratings[[c.raterParticipantIdKey, c.noteIdKey]].copy()
     # Assign factors if applicable
     if raterFactors is not None:

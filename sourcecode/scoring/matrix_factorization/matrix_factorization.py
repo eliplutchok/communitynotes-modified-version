@@ -84,6 +84,9 @@ class MatrixFactorization:
     self.trainModelData: Optional[ModelData] = None
     self.validateModelData: Optional[ModelData] = None
 
+    # self.device
+    self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
   def get_final_train_error(self) -> Optional[float]:
     return self.train_errors[-1] if self.train_errors else None
 
@@ -208,9 +211,12 @@ class MatrixFactorization:
     if globalInterceptInit is not None:
       if self._logging:
         print("initialized global intercept")
-      self.mf_model.global_intercept = torch.nn.parameter.Parameter(
-        torch.ones(1, 1) * globalInterceptInit
-      )
+      # self.mf_model.global_intercept = torch.nn.parameter.Parameter(
+      #   torch.ones(1, 1) * globalInterceptInit
+      # )
+      # changed the above lines to these 2:
+      global_intercept_tensor = torch.ones(1, 1, device=self.device) * globalInterceptInit.to(self.device)
+      self.mf_model.global_intercept = torch.nn.parameter.Parameter(global_intercept_tensor)
 
   def _get_parameters_from_trained_model(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """

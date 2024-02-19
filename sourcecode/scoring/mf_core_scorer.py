@@ -129,9 +129,15 @@ class MFCoreScorer(MFBaseScorer):
 
   def _get_note_col_mapping(self) -> Dict[str, str]:
     """Returns a dict mapping default note column names to custom names for a specific model."""
+
+    note_factor_mapping = {
+        f"{c.internalNoteFactorKeyBase}{i}": f"{c.coreNoteFactorKeyBase}{i}" 
+        for i in range(1, c.numFactors + 1)
+    }
+
     return {
       c.internalNoteInterceptKey: c.coreNoteInterceptKey,
-      c.internalNoteFactor1Key: c.coreNoteFactor1Key,
+      **note_factor_mapping,
       c.internalRatingStatusKey: c.coreRatingStatusKey,
       c.internalActiveRulesKey: c.coreActiveRulesKey,
       c.noteInterceptMinKey: c.coreNoteInterceptMinKey,
@@ -140,17 +146,26 @@ class MFCoreScorer(MFBaseScorer):
 
   def _get_user_col_mapping(self) -> Dict[str, str]:
     """Returns a dict mapping default user column names to custom names for a specific model."""
+
+    rater_factor_mapping = {
+        f"{c.internalRaterFactorKeyBase}{i}": f"{c.coreRaterFactorKeyBase}{i}" 
+        for i in range(1, c.numFactors + 1)
+    }
+
     return {
       c.internalRaterInterceptKey: c.coreRaterInterceptKey,
-      c.internalRaterFactor1Key: c.coreRaterFactor1Key,
+      **rater_factor_mapping
     }
 
   def get_scored_notes_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the scoredNotes output."""
+
+    core_note_factors = [f"{c.coreNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
     return [
       c.noteIdKey,
       c.coreNoteInterceptKey,
-      c.coreNoteFactor1Key,
+      *core_note_factors,
       c.coreRatingStatusKey,
       c.coreActiveRulesKey,
       c.activeFilterTagsKey,
@@ -160,10 +175,13 @@ class MFCoreScorer(MFBaseScorer):
 
   def get_helpfulness_scores_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the helpfulnessScores output."""
+    
+    core_rater_factors = [f"{c.coreRaterFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
     return [
       c.raterParticipantIdKey,
       c.coreRaterInterceptKey,
-      c.coreRaterFactor1Key,
+      *core_rater_factors,
       c.crhCrnhRatioDifferenceKey,
       c.meanNoteScoreKey,
       c.raterAgreeRatioKey,
