@@ -33,18 +33,27 @@ class MFExpansionPlusScorer(MFBaseScorer):
 
   def _get_note_col_mapping(self) -> Dict[str, str]:
     """Returns a dict mapping default note column names to custom names for a specific model."""
+
+    note_factor_mapping = {
+        f"{c.internalNoteFactorKeyBase}{i}": f"{c.expansionPlusNoteFactorKeyBase}{i}" 
+        for i in range(1, c.numFactors + 1)
+    }
+
     return {
       c.internalNoteInterceptKey: c.expansionPlusNoteInterceptKey,
-      c.internalNoteFactor1Key: c.expansionPlusNoteFactor1Key,
+      **note_factor_mapping,
       c.internalRatingStatusKey: c.expansionPlusRatingStatusKey,
     }
 
   def get_scored_notes_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the scoredNotes output."""
+
+    expansion_plus_note_factors = [f"{c.expansionPlusNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
     return [
       c.noteIdKey,
       c.expansionPlusNoteInterceptKey,
-      c.expansionPlusNoteFactor1Key,
+      *expansion_plus_note_factors,
       c.expansionPlusRatingStatusKey,
     ]
 
@@ -74,10 +83,13 @@ class MFExpansionPlusScorer(MFBaseScorer):
 
   def _get_dropped_user_cols(self) -> List[str]:
     """Returns a list of columns which should be excluded from helpfulnessScores output."""
+
+    internal_rater_factors = [f"{c.internalRaterFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
     return super()._get_dropped_user_cols() + [
       c.raterParticipantIdKey,
       c.internalRaterInterceptKey,
-      c.internalRaterFactor1Key,
+      *internal_rater_factors,
       c.crhCrnhRatioDifferenceKey,
       c.meanNoteScoreKey,
       c.raterAgreeRatioKey,

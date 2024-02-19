@@ -133,12 +133,14 @@ coreNoteInterceptMinKey = "coreNoteInterceptMin"
 # Expansion Model
 expansionNoteInterceptKey = "expansionNoteIntercept"
 expansionNoteFactor1Key = "expansionNoteFactor1"
+expansionNoteFactorKeyBase = "expansionNoteFactor"
 expansionRatingStatusKey = "expansionRatingStatus"
 expansionNoteInterceptMaxKey = "expansionNoteInterceptMax"
 expansionNoteInterceptMinKey = "expansionNoteInterceptMin"
 # ExpansionPlus Model
 expansionPlusNoteInterceptKey = "expansionPlusNoteIntercept"
 expansionPlusNoteFactor1Key = "expansionPlusNoteFactor1"
+expansionPlusNoteFactorKeyBase = "expansionPlusNoteFactor"
 expansionPlusRatingStatusKey = "expansionPlusRatingStatus"
 # Coverage / Helpfulness Reputation Model
 coverageNoteInterceptKey = "coverageNoteIntercept"
@@ -150,11 +152,13 @@ raterHelpfulnessReputationKey = "raterHelpfulnessReputation"
 # Group Model
 groupNoteInterceptKey = "groupNoteIntercept"
 groupNoteFactor1Key = "groupNoteFactor1"
+groupNoteFactorKeyBase = "groupNoteFactor"
 groupRatingStatusKey = "groupRatingStatus"
 groupNoteInterceptMaxKey = "groupNoteInterceptMax"
 groupNoteInterceptMinKey = "groupNoteInterceptMin"
 groupRaterInterceptKey = "groupRaterIntercept"
 groupRaterFactor1Key = "groupRaterFactor1"
+groupRaterFactorKeyBase = "groupRaterFactor"
 # Harassment/Abuse Tag
 harassmentNoteInterceptKey = "harassmentNoteIntercept"
 harassmentNoteFactor1Key = "harassmentNoteFactor1"

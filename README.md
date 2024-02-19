@@ -10,15 +10,23 @@ This is a revised edition of community notes. It fixes some bugs, adds some extr
 
 1. Added a data folder, with some scripts.
 2. Added self.device to cuda in matrix_factorization (line 88) also changed lines 214-219.
-3. In normalized_loss I added .cpu() on line 108
-4. In constants I add (in the beggining): numFactors and factorRegularizationRatio.
-5. Additional constants that I added:
+3. Added self.device to cude in normalized_loss
+4. In normalized_loss I added .cpu() on line 108
+5. In constants I add (in the beggining): numFactors and factorRegularizationRatio.
+6. Additional constants that I added:
    coreNoteFactorKeyBase
    coreRaterFactorKeyBase
+   expansionNoteFactorKeyBase
+   expansionPlusNoteFactorKeyBase
+   groupNoteFactorKeyBase
+   groupRaterFactorKeyBase
 
-6. Edited the following files and functions to handle multiple factors of rnotes and raters:
+7. Edited the following files and functions to handle multiple factors of rnotes and raters:
    mf_base_scorer -> get_scored_notes_cols, get_helpfulness_scores_cols
    mf_core_scorer -> \_get_note_col_mapping, \_get_user_col_mapping, get_scored_notes_cols, get_helpfulness_scores_cols
+   mf_expansion_scorer -> get_scored_notes_cols, \_get_dropped_user_cols
+   mf_expansion_plus_scorer -> get_scored_notes_cols, \_get_dropped_note_cols
+   mf_group_scorer -> coalesce_group_models, MFGroupScorer, MFGroupScorer->\_get_note_col_mapping, MFGroupScorer->\_get_user_col_mapping, MFGroupScorer->get_scored_notes_cols, MFGroupScorer->get_helpfulness_scores_cols
 
 Instructions to run program:
 

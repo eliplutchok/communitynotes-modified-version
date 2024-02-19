@@ -79,9 +79,12 @@ def coalesce_group_models(
   Returns:
     tuple containing coalesced scoring results for notes and users.
   """
+
+  group_note_factors = [f"{c.groupNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+  
   for col in [
     c.groupNoteInterceptKey,
-    c.groupNoteFactor1Key,
+    *group_note_factors,
     c.groupRatingStatusKey,
     c.groupNoteInterceptMaxKey,
     c.groupNoteInterceptMinKey,
@@ -89,8 +92,10 @@ def coalesce_group_models(
   ]:
     scoredNotes = _coalesce_columns(scoredNotes, col)
 
-  for col in [c.groupRaterInterceptKey, c.groupRaterFactor1Key, c.modelingGroupKey]:
+  group_rater_factors = [f"{c.groupRaterFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+  for col in [c.groupRaterInterceptKey, *group_rater_factors, c.modelingGroupKey]:
     helpfulnessScores = _coalesce_columns(helpfulnessScores, col)
+
 
   return scoredNotes, helpfulnessScores
 
@@ -167,41 +172,66 @@ class MFGroupScorer(MFBaseScorer):
     self._groupNumber = groupNumber
     self._groupThreshold = groupThreshold
     self._groupNoteInterceptKey = f"{c.groupNoteInterceptKey}_{self._groupNumber}"
-    self._groupNoteFactor1Key = f"{c.groupNoteFactor1Key}_{self._groupNumber}"
+    # self._groupNoteFactor1Key = f"{c.groupNoteFactor1Key}_{self._groupNumber}"
     self._groupRatingStatusKey = f"{c.groupRatingStatusKey}_{self._groupNumber}"
     self._groupNoteInterceptMaxKey = f"{c.groupNoteInterceptMaxKey}_{self._groupNumber}"
     self._groupNoteInterceptMinKey = f"{c.groupNoteInterceptMinKey}_{self._groupNumber}"
     self._groupRaterInterceptKey = f"{c.groupRaterInterceptKey}_{self._groupNumber}"
-    self._groupRaterFactor1Key = f"{c.groupRaterFactor1Key}_{self._groupNumber}"
+    # self._groupRaterFactor1Key = f"{c.groupRaterFactor1Key}_{self._groupNumber}"
     self._modelingGroupKey = f"{c.modelingGroupKey}_{self._groupNumber}"
     self._requireInternalAuthor = requireInternalAuthor
+
+    # Dynamically define group rater and note factor keys
+    for i in range(1, c.numFactors + 1):
+        setattr(self, f"_{c.groupNoteFactorKeyBase}{i}Key", f"{c.groupNoteFactorKeyBase}{i}_{self._groupNumber}")
+        setattr(self, f"{c.groupRaterFactorKeyBase}{i}Key", f"{c.groupRaterFactorKeyBase}{i}_{self._groupNumber}")
 
   def get_name(self):
     return f"MFGroupScorer_{self._groupNumber}"
 
   def _get_note_col_mapping(self) -> Dict[str, str]:
     """Returns a dict mapping default note column names to custom names for a specific model."""
-    return {
+    note_factor_mapping = {
       c.internalNoteInterceptKey: self._groupNoteInterceptKey,
-      c.internalNoteFactor1Key: self._groupNoteFactor1Key,
       c.internalRatingStatusKey: self._groupRatingStatusKey,
       c.noteInterceptMinKey: self._groupNoteInterceptMinKey,
       c.noteInterceptMaxKey: self._groupNoteInterceptMaxKey,
     }
+    for i in range(1, c.numFactors + 1):
+        internal_factor_key = f"{c.internalNoteFactorKeyBase}{i}"
+        group_factor_key = f"_{c.groupNoteFactorKeyBase}{i}Key"
+        
+        # Assuming these keys exist in 'c' and 'self' respectively
+        note_factor_mapping[internal_factor_key] = getattr(self, group_factor_key)
+
+    return note_factor_mapping
 
   def _get_user_col_mapping(self) -> Dict[str, str]:
     """Returns a dict mapping default user column names to custom names for a specific model."""
-    return {
-      c.internalRaterInterceptKey: self._groupRaterInterceptKey,
-      c.internalRaterFactor1Key: self._groupRaterFactor1Key,
+    user_col_mapping = {
+        c.internalRaterInterceptKey: self._groupRaterInterceptKey
     }
+
+    # Dynamically add mappings for each rater factor
+    for i in range(1, c.numFactors + 1):
+        internal_factor_key = f"{c.internalRaterFactorKeyBase}{i}"
+        group_factor_key = f"_{c.groupRaterFactorKeyBase}{i}Key"
+        
+        # Assuming these keys exist in 'c' and 'self' respectively
+        user_col_mapping[internal_factor_key] = getattr(self, group_factor_key)
+
+    return user_col_mapping
 
   def get_scored_notes_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the scoredNotes output."""
+
+    # Dynamic list of group note factor keys
+    group_note_factors = [getattr(self, f"_{c.groupNoteFactorKeyBase}{i}Key") for i in range(1, c.numFactors + 1)]
+
     return [
       c.noteIdKey,
       self._groupNoteInterceptKey,
-      self._groupNoteFactor1Key,
+      *group_note_factors,
       self._groupRatingStatusKey,
       self._groupNoteInterceptMaxKey,
       self._groupNoteInterceptMinKey,
@@ -210,11 +240,15 @@ class MFGroupScorer(MFBaseScorer):
 
   def get_helpfulness_scores_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the helpfulnessScores output."""
+
+    # Dynamic list of group rater factor keys
+    group_rater_factors = [getattr(self, f"_{c.groupNoteFactorKeyBase}{i}Key") for i in range(1, c.numFactors + 1)]
+
     return [
-      c.raterParticipantIdKey,
-      self._groupRaterInterceptKey,
-      self._groupRaterFactor1Key,
-      self._modelingGroupKey,
+        c.raterParticipantIdKey,
+        self._groupRaterInterceptKey,
+        *group_rater_factors,  # Unpacking the list of group rater factors
+        self._modelingGroupKey,
     ]
 
   def get_auxiliary_note_info_cols(self) -> List[str]:
