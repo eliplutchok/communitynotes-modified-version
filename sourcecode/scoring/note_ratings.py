@@ -41,19 +41,19 @@ def is_crnh_ucb(scoredNotes, minRatingsNeeded, crnhThresholdUCBIntercept) -> pd.
 #   )
 
 # new function
-def is_crnh_diamond(scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier):
+def is_crnh_diamond(
+  scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
+) -> pd.Series:
 
-    # internalNoteFactors = [c.internalNoteFactor1Key]
+  internalNoteFactors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
 
-    threshold = crnhThresholdIntercept + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
+  threshold = crnhThresholdIntercept 
+  for factorKey in internalNoteFactors:
+      threshold += crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[factorKey])
 
-    # for factorKey in internalNoteFactors:
-    #     threshold += crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[factorKey])
-
-    return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
-        scoredNotes[c.internalNoteInterceptKey] <= threshold 
-    )
-
+  return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
+      scoredNotes[c.internalNoteInterceptKey] <= threshold 
+  )
 
 
 def get_ratings_before_note_status_and_public_tsv(
