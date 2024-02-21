@@ -54,8 +54,8 @@ def is_crnh_diamond(scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhT
     # Check if the relevant columns in 'scoredNotes' are of numeric type
     numeric_columns = [c.numRatingsKey, c.internalNoteInterceptKey, c.internalNoteFactor1Key]
     for col in numeric_columns:
-        if scoredNotes[col].dtype.kind not in 'biufc':
-            raise TypeError(f"Column '{col}' in 'scoredNotes' should be numeric, but got {scoredNotes[col].dtype}")
+        if scoredNotes[col].dtypes.kind not in 'biufc':
+            raise TypeError(f"Column '{col}' in 'scoredNotes' should be numeric, but got {scoredNotes[col].dtypes}")
 
     # Perform the original calculation
     return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
