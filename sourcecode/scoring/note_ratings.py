@@ -30,30 +30,30 @@ def is_crnh_ucb(scoredNotes, minRatingsNeeded, crnhThresholdUCBIntercept) -> pd.
     return enoughRatings & (~enoughRatings)
 
 
-# def is_crnh_diamond(
-#   scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
-# ) -> pd.Series:
-
-#   return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
-#     scoredNotes[c.internalNoteInterceptKey]
-#     <= crnhThresholdIntercept
-#     + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
-#   )
-
-# new function
 def is_crnh_diamond(
   scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
 ) -> pd.Series:
 
-  internalNoteFactors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
-
-  threshold = crnhThresholdIntercept 
-  for factorKey in internalNoteFactors:
-      threshold += crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[factorKey])
-
   return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
-      scoredNotes[c.internalNoteInterceptKey] <= threshold 
+    scoredNotes[c.internalNoteInterceptKey]
+    <= crnhThresholdIntercept
+    + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
   )
+
+# new function
+# def is_crnh_diamond(
+#   scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
+# ) -> pd.Series:
+
+#   internalNoteFactors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
+#   threshold = crnhThresholdIntercept 
+#   for factorKey in internalNoteFactors:
+#       threshold += crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[factorKey])
+
+#   return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
+#       scoredNotes[c.internalNoteInterceptKey] <= threshold 
+#   )
 
 
 def get_ratings_before_note_status_and_public_tsv(
