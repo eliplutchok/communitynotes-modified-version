@@ -43,16 +43,16 @@ def is_crnh_ucb(scoredNotes, minRatingsNeeded, crnhThresholdUCBIntercept) -> pd.
 # new function
 def is_crnh_diamond(scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier):
 
-    internalNoteFactors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+    internalNoteFactors = [c.internalNoteFactor1Key]
 
     threshold = crnhThresholdIntercept
 
     for factorKey in internalNoteFactors:
-        factorValue = pd.to_numeric(scoredNotes[factorKey], errors='coerce')  # Convert to numeric, coerce errors to NaN
-        if factorValue.isnull().any():
-            # Handle non-numeric values here, e.g., skip or replace with a default value
-            continue
-        threshold += crnhThresholdNoteFactorMultiplier * np.abs(factorValue)
+        # factorValue = pd.to_numeric(scoredNotes[factorKey], errors='coerce')  # Convert to numeric, coerce errors to NaN
+        # if factorValue.isnull().any():
+        #     # Handle non-numeric values here, e.g., skip or replace with a default value
+        #     continue
+        threshold += crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[factorKey])
 
     return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
         scoredNotes[c.internalNoteInterceptKey] <= threshold 
