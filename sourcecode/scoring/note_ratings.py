@@ -30,15 +30,40 @@ def is_crnh_ucb(scoredNotes, minRatingsNeeded, crnhThresholdUCBIntercept) -> pd.
     return enoughRatings & (~enoughRatings)
 
 
-def is_crnh_diamond(
-  scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
-) -> pd.Series:
+# def is_crnh_diamond(
+#   scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
+# ) -> pd.Series:
 
-  return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
-    scoredNotes[c.internalNoteInterceptKey]
-    <= crnhThresholdIntercept
-    + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
-  )
+#   return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
+#     scoredNotes[c.internalNoteInterceptKey]
+#     <= crnhThresholdIntercept
+#     + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
+#   )
+
+def is_crnh_diamond(scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier) -> pd.Series:
+    # Type checking for 'minRatingsNeeded', 'crnhThresholdIntercept', and 'crnhThresholdNoteFactorMultiplier'
+    if not isinstance(minRatingsNeeded, (int, float)):
+        raise TypeError(f"'minRatingsNeeded' should be an int or float, but got {type(minRatingsNeeded)}")
+
+    if not isinstance(crnhThresholdIntercept, (int, float)):
+        raise TypeError(f"'crnhThresholdIntercept' should be an int or float, but got {type(crnhThresholdIntercept)}")
+
+    if not isinstance(crnhThresholdNoteFactorMultiplier, (int, float)):
+        raise TypeError(f"'crnhThresholdNoteFactorMultiplier' should be an int or float, but got {type(crnhThresholdNoteFactorMultiplier)}")
+
+    # Check if the relevant columns in 'scoredNotes' are of numeric type
+    numeric_columns = [c.numRatingsKey, c.internalNoteInterceptKey, c.internalNoteFactor1Key]
+    for col in numeric_columns:
+        if scoredNotes[col].dtype.kind not in 'biufc':
+            raise TypeError(f"Column '{col}' in 'scoredNotes' should be numeric, but got {scoredNotes[col].dtype}")
+
+    # Perform the original calculation
+    return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
+        scoredNotes[c.internalNoteInterceptKey]
+        <= crnhThresholdIntercept
+        + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
+    )
+
 
 # new function
 # def is_crnh_diamond(
