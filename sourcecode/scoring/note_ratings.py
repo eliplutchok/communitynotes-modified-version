@@ -474,15 +474,15 @@ def compute_scored_notes(
       lambda noteStats: is_crh_function(noteStats, minRatingsNeeded, crhThreshold),
       onlyApplyToNotesThatSayTweetIsMisleading=True,
     ),
-    scoring_rules.RuleFromFunction(
-      RuleID.GENERAL_CRNH,
-      {RuleID.INITIAL_NMR},
-      c.currentlyRatedNotHelpful,
-      lambda noteStats: is_crnh_diamond_function(
-        noteStats, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
-      ),
-      onlyApplyToNotesThatSayTweetIsMisleading=False,
-    ),
+    # scoring_rules.RuleFromFunction(
+    #   RuleID.GENERAL_CRNH,
+    #   {RuleID.INITIAL_NMR},
+    #   c.currentlyRatedNotHelpful,
+    #   lambda noteStats: is_crnh_diamond_function(
+    #     noteStats, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
+    #   ),
+    #   onlyApplyToNotesThatSayTweetIsMisleading=False,
+    # ),
     scoring_rules.RuleFromFunction(
       RuleID.UCB_CRNH,
       {RuleID.INITIAL_NMR},
