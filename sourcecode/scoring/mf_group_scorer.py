@@ -79,7 +79,6 @@ def coalesce_group_models(
   Returns:
     tuple containing coalesced scoring results for notes and users.
   """
-
   group_note_factors = [f"{c.groupNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
   
   for col in [
@@ -224,7 +223,6 @@ class MFGroupScorer(MFBaseScorer):
 
   def get_scored_notes_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the scoredNotes output."""
-
     # Dynamic list of group note factor keys
     group_note_factors = [getattr(self, f"_{c.groupNoteFactorKeyBase}{i}Key") for i in range(1, c.numFactors + 1)]
 
@@ -240,7 +238,6 @@ class MFGroupScorer(MFBaseScorer):
 
   def get_helpfulness_scores_cols(self) -> List[str]:
     """Returns a list of columns which should be present in the helpfulnessScores output."""
-
     # Dynamic list of group rater factor keys
     group_rater_factors = [getattr(self, f"_{c.groupRaterFactorKeyBase}{i}Key") for i in range(1, c.numFactors + 1)]
 

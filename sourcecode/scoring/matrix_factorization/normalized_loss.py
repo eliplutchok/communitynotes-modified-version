@@ -97,7 +97,7 @@ class NormalizedLoss(torch.nn.Module):
     return ratings
 
   def __init__(
-    self, criterion, ratings, targets, hparams, labelCol, raterFactors=None, device=None
+    self, criterion, ratings, targets, hparams, labelCol, raterFactors=None, device="cpu"
   ):
     super().__init__()
     # Initialize members
@@ -106,7 +106,6 @@ class NormalizedLoss(torch.nn.Module):
     # Validate that ratings is ordered correctly and preserve order
     assert len(ratings) == len(targets)
     assert all(ratings[labelCol].values == targets.cpu().numpy())
-
     ratingOrder = ratings[[c.raterParticipantIdKey, c.noteIdKey]].copy()
     # Assign factors if applicable
     if raterFactors is not None:
@@ -133,6 +132,4 @@ class NormalizedLoss(torch.nn.Module):
     self.device = device
 
   def forward(self, pred):
-    
     return (self.weights.to(self.device) * self.loss_fn(pred.to(self.device), self.targets.to(self.device))).mean()
-

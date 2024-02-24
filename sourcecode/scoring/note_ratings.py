@@ -30,55 +30,20 @@ def is_crnh_ucb(scoredNotes, minRatingsNeeded, crnhThresholdUCBIntercept) -> pd.
     return enoughRatings & (~enoughRatings)
 
 
+# new function
 def is_crnh_diamond(
   scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
 ) -> pd.Series:
 
+  internalNoteFactors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
+
+  threshold = crnhThresholdIntercept 
+  for factorKey in internalNoteFactors:
+      threshold += crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[factorKey])
+
   return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
-    scoredNotes[c.internalNoteInterceptKey]
-    <= crnhThresholdIntercept
-    # + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
+      scoredNotes[c.internalNoteInterceptKey] <= threshold 
   )
-
-# def is_crnh_diamond(scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier) -> pd.Series:
-#     # Type checking for 'minRatingsNeeded', 'crnhThresholdIntercept', and 'crnhThresholdNoteFactorMultiplier'
-#     if not isinstance(minRatingsNeeded, (int, float)):
-#         raise TypeError(f"'minRatingsNeeded' should be an int or float, but got {type(minRatingsNeeded)}")
-
-#     if not isinstance(crnhThresholdIntercept, (int, float)):
-#         raise TypeError(f"'crnhThresholdIntercept' should be an int or float, but got {type(crnhThresholdIntercept)}")
-
-#     if not isinstance(crnhThresholdNoteFactorMultiplier, (int, float)):
-#         raise TypeError(f"'crnhThresholdNoteFactorMultiplier' should be an int or float, but got {type(crnhThresholdNoteFactorMultiplier)}")
-
-#     # Check if the relevant columns in 'scoredNotes' are of numeric type
-#     numeric_columns = [c.numRatingsKey, c.internalNoteInterceptKey, c.internalNoteFactor1Key]
-#     for col in numeric_columns:
-#         if scoredNotes[col].dtypes.kind not in 'biufc':
-#             raise TypeError(f"Column '{col}' in 'scoredNotes' should be numeric, but got {scoredNotes[col].dtypes}")
-
-#     # Perform the original calculation
-#     return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
-#         scoredNotes[c.internalNoteInterceptKey]
-#         <= crnhThresholdIntercept
-#         + crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[c.internalNoteFactor1Key])
-#     )
-
-
-# new function
-# def is_crnh_diamond(
-#   scoredNotes, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
-# ) -> pd.Series:
-
-#   internalNoteFactors = [f"{c.internalNoteFactorKeyBase}{i}" for i in range(1, c.numFactors + 1)]
-
-#   threshold = crnhThresholdIntercept 
-#   for factorKey in internalNoteFactors:
-#       threshold += crnhThresholdNoteFactorMultiplier * np.abs(scoredNotes[factorKey])
-
-#   return (scoredNotes[c.numRatingsKey] >= minRatingsNeeded) & (
-#       scoredNotes[c.internalNoteInterceptKey] <= threshold 
-#   )
 
 
 def get_ratings_before_note_status_and_public_tsv(
@@ -452,12 +417,12 @@ def compute_scored_notes(
     ]
   )
 
-  # Merge with noteParams as necessary
-  noteParamsColsToKeep = [c.noteIdKey, c.internalNoteInterceptKey, c.internalNoteFactor1Key]
+   # Merge with noteParams as necessary
+  noteParamsColsToKeep = [c.noteIdKey, c.internalNoteInterceptKey]
 
   # add all note factor columns
   noteParamsColsToKeep += [c.internalNoteFactorKeyBase + str(i) for i in range(1, c.numFactors + 1)]
-
+    
   if finalRound:
     noteParamsColsToKeep += [c.lowDiligenceInterceptKey]
   for col in c.noteParameterUncertaintyTSVColumns:
@@ -474,15 +439,15 @@ def compute_scored_notes(
       lambda noteStats: is_crh_function(noteStats, minRatingsNeeded, crhThreshold),
       onlyApplyToNotesThatSayTweetIsMisleading=True,
     ),
-    # scoring_rules.RuleFromFunction(
-    #   RuleID.GENERAL_CRNH,
-    #   {RuleID.INITIAL_NMR},
-    #   c.currentlyRatedNotHelpful,
-    #   lambda noteStats: is_crnh_diamond_function(
-    #     noteStats, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
-    #   ),
-    #   onlyApplyToNotesThatSayTweetIsMisleading=False,
-    # ),
+    scoring_rules.RuleFromFunction(
+      RuleID.GENERAL_CRNH,
+      {RuleID.INITIAL_NMR},
+      c.currentlyRatedNotHelpful,
+      lambda noteStats: is_crnh_diamond_function(
+        noteStats, minRatingsNeeded, crnhThresholdIntercept, crnhThresholdNoteFactorMultiplier
+      ),
+      onlyApplyToNotesThatSayTweetIsMisleading=False,
+    ),
     scoring_rules.RuleFromFunction(
       RuleID.UCB_CRNH,
       {RuleID.INITIAL_NMR},

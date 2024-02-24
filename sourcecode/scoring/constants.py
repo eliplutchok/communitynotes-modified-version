@@ -11,6 +11,13 @@ numFactors = 1
 # we will divide the regularization of the intercepts by this number
 interceptRegularizationDampener = numFactors
 
+coreNoteFactorKeyBase = "coreNoteFactor"
+coreRaterFactorKeyBase = "coreRaterFactor"
+expansionNoteFactorKeyBase = "expansionNoteFactor"
+expansionPlusNoteFactorKeyBase = "expansionPlusNoteFactor"
+groupNoteFactorKeyBase = "groupNoteFactor"
+groupRaterFactorKeyBase = "groupRaterFactor"
+
 # Default number of threads to use in torch if os.cpu_count() is unavailable
 # and no value is specified.
 defaultNumThreads = os.cpu_count() or 8
@@ -120,11 +127,9 @@ internalRaterFactor1Key = rater_factor_key(1)
 # Output Scoring Columns.
 # Core Model
 coreNoteInterceptKey = "coreNoteIntercept"
-coreNoteFactorKeyBase = "coreNoteFactor"
 coreNoteFactor1Key = "coreNoteFactor1"
 coreRaterInterceptKey = "coreRaterIntercept"
 coreRaterFactor1Key = "coreRaterFactor1"
-coreRaterFactorKeyBase = "coreRaterFactor"
 coreRatingStatusKey = "coreRatingStatus"
 coreActiveRulesKey = "coreActiveRules"
 coreNoteInterceptMaxKey = "coreNoteInterceptMax"
@@ -132,14 +137,12 @@ coreNoteInterceptMinKey = "coreNoteInterceptMin"
 # Expansion Model
 expansionNoteInterceptKey = "expansionNoteIntercept"
 expansionNoteFactor1Key = "expansionNoteFactor1"
-expansionNoteFactorKeyBase = "expansionNoteFactor"
 expansionRatingStatusKey = "expansionRatingStatus"
 expansionNoteInterceptMaxKey = "expansionNoteInterceptMax"
 expansionNoteInterceptMinKey = "expansionNoteInterceptMin"
 # ExpansionPlus Model
 expansionPlusNoteInterceptKey = "expansionPlusNoteIntercept"
 expansionPlusNoteFactor1Key = "expansionPlusNoteFactor1"
-expansionPlusNoteFactorKeyBase = "expansionPlusNoteFactor"
 expansionPlusRatingStatusKey = "expansionPlusRatingStatus"
 # Coverage / Helpfulness Reputation Model
 coverageNoteInterceptKey = "coverageNoteIntercept"
@@ -151,13 +154,11 @@ raterHelpfulnessReputationKey = "raterHelpfulnessReputation"
 # Group Model
 groupNoteInterceptKey = "groupNoteIntercept"
 groupNoteFactor1Key = "groupNoteFactor1"
-groupNoteFactorKeyBase = "groupNoteFactor"
 groupRatingStatusKey = "groupRatingStatus"
 groupNoteInterceptMaxKey = "groupNoteInterceptMax"
 groupNoteInterceptMinKey = "groupNoteInterceptMin"
 groupRaterInterceptKey = "groupRaterIntercept"
 groupRaterFactor1Key = "groupRaterFactor1"
-groupRaterFactorKeyBase = "groupRaterFactor"
 # Harassment/Abuse Tag
 harassmentNoteInterceptKey = "harassmentNoteIntercept"
 harassmentNoteFactor1Key = "harassmentNoteFactor1"
@@ -495,10 +496,16 @@ deprecatedNoteModelOutputColumns = frozenset(
   }
 )
 
+# Define note factor tuples
+coreNoteFactors = [(f"coreNoteFactor{i}", np.double) for i in range(1, numFactors + 1)]
+groupNoteFactors = [(f"groupNoteFactor{i}", np.double) for i in range(1, numFactors + 1)]
+expansionNoteFactors = [(f"expansionNoteFactor{i}", np.double) for i in range(1, numFactors + 1)]
+expansionPlusNoteFactors = [(f"expansionPlusNoteFactor{i}", np.double) for i in range(1, numFactors + 1)]
+
 noteModelOutputTSVColumnsAndTypes = [
   (noteIdKey, np.int64),
   (coreNoteInterceptKey, np.double),
-  (coreNoteFactor1Key, np.double),
+  *coreNoteFactors,
   (finalRatingStatusKey, str),
   (firstTagKey, str),
   (secondTagKey, str),
@@ -514,7 +521,7 @@ noteModelOutputTSVColumnsAndTypes = [
   (metaScorerActiveRulesKey, str),
   (decidedByKey, str),
   (expansionNoteInterceptKey, np.double),
-  (expansionNoteFactor1Key, np.double),
+  *expansionNoteFactors,
   (expansionRatingStatusKey, str),
   (coverageNoteInterceptKey, np.double),
   (coverageNoteFactor1Key, np.double),
@@ -526,7 +533,7 @@ noteModelOutputTSVColumnsAndTypes = [
   (coverageNoteInterceptMinKey, np.double),
   (coverageNoteInterceptMaxKey, np.double),
   (groupNoteInterceptKey, np.double),
-  (groupNoteFactor1Key, np.double),
+  *groupNoteFactors,
   (groupRatingStatusKey, str),
   (groupNoteInterceptMaxKey, np.double),
   (groupNoteInterceptMinKey, np.double),
@@ -534,7 +541,7 @@ noteModelOutputTSVColumnsAndTypes = [
   (numRatingsKey, np.int64),
   (timestampMillisOfNoteCurrentLabelKey, np.double),
   (expansionPlusNoteInterceptKey, np.double),
-  (expansionPlusNoteFactor1Key, np.double),
+  *expansionPlusNoteFactors,
   (expansionPlusRatingStatusKey, str),
 ]
 noteModelOutputTSVColumns = [col for (col, dtype) in noteModelOutputTSVColumnsAndTypes]

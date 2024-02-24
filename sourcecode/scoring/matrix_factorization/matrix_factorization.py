@@ -33,9 +33,9 @@ class MatrixFactorization:
     posWeight=None,
     userFactorLambda=0.03,
     noteFactorLambda=0.03,
-    userInterceptLambda=0.03 * (5 / (c.interceptRegularizationDampener)),
-    noteInterceptLambda=0.03 * (5 / (c.interceptRegularizationDampener)),
-    globalInterceptLambda=0.03 * (5 / (c.interceptRegularizationDampener)),
+    userInterceptLambda=0.03 * (5/c.interceptRegularizationDampener),
+    noteInterceptLambda=0.03 * (5/c.interceptRegularizationDampener),
+    globalInterceptLambda=0.03 * (5/c.interceptRegularizationDampener),
     diamondLambda=0,
     normalizedLossHyperparameters=None,
   ) -> None:
@@ -84,7 +84,6 @@ class MatrixFactorization:
     self.trainModelData: Optional[ModelData] = None
     self.validateModelData: Optional[ModelData] = None
 
-    # self.device
     self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
   def get_final_train_error(self) -> Optional[float]:
