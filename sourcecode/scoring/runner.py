@@ -106,10 +106,10 @@ def main():
   )
 
   # Write outputs to local disk.
-  write_tsv_local(scoredNotes, os.path.join(args.outdir, "scored_notes.tsv"))
-  write_tsv_local(helpfulnessScores, os.path.join(args.outdir, "helpfulness_scores.tsv"))
-  write_tsv_local(newStatus, os.path.join(args.outdir, "note_status_history.tsv"))
-  write_tsv_local(auxNoteInfo, os.path.join(args.outdir, "aux_note_info.tsv"))
+  write_tsv_local(scoredNotes, os.path.join(args.outdir, f"scored_notes_{c.numFactors}_{c.interceptRegularizationDampener}.tsv"))
+  write_tsv_local(helpfulnessScores, os.path.join(args.outdir, f"helpfulness_scores_{c.numFactors}_{c.interceptRegularizationDampener}.tsv"))
+  write_tsv_local(newStatus, os.path.join(args.outdir, f"note_status_history_{c.numFactors}_{c.interceptRegularizationDampener}.tsv"))
+  write_tsv_local(auxNoteInfo, os.path.join(args.outdir, f"aux_note_info_{c.numFactors}_{c.interceptRegularizationDampener}.tsv"))
 
 
 if __name__ == "__main__":

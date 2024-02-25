@@ -2,7 +2,7 @@
 
 ![](/documentation/images/help-rate-this-note-expanded.png)
 
-## Welcome to Community Notes's revised addition by me
+## Welcome to Community Notes's Revised Addition by Me
 
 Please go here to see the original readme: https://github.com/twitter/communitynotes/tree/main?tab=readme-ov-file
 
@@ -30,7 +30,7 @@ Changes required to handle multiple factors:
    - mf_core_scorer -> \_get_note_col_mapping, \_get_user_col_mapping, get_scored_notes_cols, get_helpfulness_scores_cols
    - mf_expansion_scorer -> get_scored_notes_cols, \_get_dropped_user_cols
    - mf_expansion_plus_scorer -> get_scored_notes_cols, \_get_note_col_mapping, \_get_dropped_user_cols
-   - mf_group_scorer -> coalesce_group_models, MFGroupScorer, MFGroupScorer->\_get_note_col_mapping, MFGroupScorer -> \_get_user_col_mapping, MFGroupScorer->get_scored_notes_cols, MFGroupScorer->get_helpfulness_scores_cols
+   - mf_group_scorer -> coalesce_group_models, MFGroupScorer, MFGroupScorer -> \_get_note_col_mapping, MFGroupScorer -> \_get_user_col_mapping, MFGroupScorer -> get_scored_notes_cols, MFGroupScorer -> get_helpfulness_scores_cols
    - note_ratings -> compute_scored_notes
    - note_ratings -> is_crnh_diamond
 5. Edited matrix_factorization:
@@ -40,7 +40,9 @@ Changes required to handle multiple factors:
 Additional Changes:
 
 1. Added data folder.
-1. in the data folder I added a script that downloads all the necessary data.
+2. In the data folder I added a script that downloads all the necessary data.
+3. I added/will add additional programs as well to help the user get a feel for the data.
+4. Edited file names in runner.py to dynamically reflect the number of factors and interceptRegularizationDampener used.
 
 Instructions to run program:
 

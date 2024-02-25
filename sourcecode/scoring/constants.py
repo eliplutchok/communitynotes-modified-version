@@ -43,7 +43,7 @@ tagPercentileForNormalization = 40
 intervalHalfWidth = 0.3
 
 # Data Filenames
-scoredNotesOutputPath = "scoredNotes.tsv"
+scoredNotesOutputPath = f"scoredNotes.tsv"
 enrollmentInputPath = "userEnrollment-00000.tsv"
 notesInputPath = "notes-00000.tsv"
 ratingsInputPath = "ratings"
