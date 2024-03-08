@@ -51,7 +51,11 @@ def download_and_process_files(parent_dir, date_str):
         f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00002.tsv',
         f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00000.tsv',
         f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00003.tsv',
-        f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00001.tsv'
+        f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00001.tsv',
+        f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00004.tsv',
+        f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00005.tsv',
+        f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00006.tsv',
+        f'https://ton.twimg.com/birdwatch-public-data/{date}/noteRatings/ratings-00007.tsv'
     ]
 
     # Download and process TSV files
@@ -67,5 +71,5 @@ def download_and_process_files(parent_dir, date_str):
 
 # Usage Example
 parent_dir = '.'  # Replace with your parent directory path
-date_str = '2024/02/06'  # Replace with your date
+date_str = '2024/03/07'  # Replace with your date
 download_and_process_files(parent_dir, date_str)
