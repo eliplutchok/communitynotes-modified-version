@@ -44,6 +44,11 @@ Additional Changes:
 3. I added/will add additional programs as well to help the user get a feel for the data.
 4. Edited file names in runner.py to dynamically reflect the number of factors and interceptRegularizationDampener used.
 
+Some Notes:
+
+1. CRH notes slightly decrease as the number of factors increase with the dampener set to `numFactors`, so you may want to set it a bit smaller, like `.9 * numFactors` or something.
+2. `_check_flips` in note-status_history.py checks how many statuses changed. When using many factors, you will trigger the curent asserts even if you have the same number of CRH notes because they will be different notes than the originals. If you are experimenting and don't want this to be triggered, you can edit `maxCrhChurn` to like .99 or higher.
+
 Instructions to run program:
 
 1. Install requirements `pip install -r requirements.txt` (first set up virtual env if your doing this on your own pc or gpu).
